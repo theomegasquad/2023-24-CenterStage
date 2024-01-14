@@ -125,27 +125,29 @@ public class RedAutoLeft extends LinearOpMode {
         if (opModeIsActive()) {
             int randomization = randDetectDS();
 
-            move(-17, 0.4);
+            move(-14, 0.4);
             sleep(500);
-            turn(-90, 0.4);
+            turn(90, 0.4);
 
 
             runtime.reset();
             while (runtime.milliseconds() < 2500){
-                double speed = -0.3;
+                double speed = 0.42;
                 leftFront.setPower(speed);
                 leftBack.setPower(-speed);
                 rightFront.setPower(-speed);
                 rightBack.setPower(speed);
             }
 
-            strafe(4, 0.4);
+            strafe(-3, 0.4);
             //*****THIS MAY NEED TO BE CHANGED IN COMPETITION*****
             //turn(3, 0.3);
-            move(-78, 0.5);
+            move(75, 0.5);
+            turn(160, 0.4);
+
 
             runtime.reset();
-            while (runtime.milliseconds() < 2000){
+            while (runtime.milliseconds() < 1750){
                 double speed = -0.3;
                 leftFront.setPower(speed);
                 leftBack.setPower(-speed);
@@ -212,7 +214,7 @@ public class RedAutoLeft extends LinearOpMode {
                 rightSlide.setPower(0.4);
             }
 
-            
+
 
             leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -299,173 +301,62 @@ public class RedAutoLeft extends LinearOpMode {
 
         sleep(500);
 
-        if (rightDist.getDistance(DistanceUnit.CM) < 20){
-            turn(-17, 0.3);
+        if (leftDist.getDistance(DistanceUnit.CM) < 20){
+            turn(-25, 0.3);
+            sleep(100);
             eject();
-            turn(15, 0.3);
-            move(4, 0.4);
+            sleep(100);
+            turn(25, 0.3);
             return 0;
         }
 
         move(7, 0.4);
-        if (leftDist.getDistance(DistanceUnit.CM) < 20){
+        if (rightDist.getDistance(DistanceUnit.CM) < 20){
             turn(15, 0.3);
+            sleep(100);
             eject();
-            turn(-17, 0.3);
-            move(-7, 0.4);
+            sleep(100);
+            turn(-21, 0.3);
+            sleep(100);
+            move(-6, 0.4);
             return 1;
         }
 
-        turn(75, 0.4);
-        move(7, 0.4);
+        turn(95, 0.4);
+        sleep(100);
+        move(10, 0.4);
+        sleep(100);
         eject();
-        move(-7, 0.4);
-        turn(-70, 0.4);
+        sleep(100);
         move(-4, 0.4);
+        sleep(100);
+        turn(-95, 0.4);
+        sleep(100);
+        move(-6, 0.4);
 
         return 2;
 
-        /*
-        //Problem: Real Distance Sensor?
-        move(24, 0.4);
-
-        double speed = 0.3;
-        int turnTime = 2000;
-        boolean detected = false;
-        runtime.reset();
-        while (runtime.milliseconds() < turnTime){
-            telemetry.addData("Status", "Scanning Left");
-            telemetry.addData("Distance", leftDist.getDistance(DistanceUnit.CM));
-            leftFront.setPower(-speed);
-            leftBack.setPower(-speed);
-            rightFront.setPower(speed);
-            rightBack.setPower(speed);
-
-            if (leftDist.getDistance(DistanceUnit.CM) < 20){
-                detected = true;
-                telemetry.addData("Detected!", "");
-            }
-            telemetry.update();
-
-        }
-
-        leftFront.setPower(0);
-        leftBack.setPower(0);
-        rightFront.setPower(0);
-        rightBack.setPower(0);
-
-        if (detected){
-            //Detected!
-            telemetry.addData("Status", "Detected On Left; Ejecting");
-            telemetry.update();
-            intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            //Potential Change
-            runtime.reset();
-            while (runtime.milliseconds() < 1500){
-                intake.setPower(intakeSpeed);
-                sleep(100);
-                intake.setPower(0.0);
-                sleep(70);
-            }
-
-            intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            return;
-        }
-
-        runtime.reset();
-        while (runtime.milliseconds() < turnTime){
-            leftFront.setPower(speed);
-            leftBack.setPower(speed);
-            rightFront.setPower(-speed);
-            rightBack.setPower(-speed);
-        }
-
-        runtime.reset();
-        while (runtime.milliseconds() < turnTime){
-            telemetry.addData("Status", "Scanning Right");
-            telemetry.addData("Distance", leftDist.getDistance(DistanceUnit.CM));
-            leftFront.setPower(speed);
-            leftBack.setPower(speed);
-            rightFront.setPower(-speed);
-            rightBack.setPower(-speed);
-
-            if (rightDist.getDistance(DistanceUnit.CM) < 20){
-                detected = true;
-                telemetry.addData("Detected!", "");
-            }
-
-            telemetry.addData("Detection Status", detected);
-            telemetry.update();
-        }
-
-        leftFront.setPower(0);
-        leftBack.setPower(0);
-        rightFront.setPower(0);
-        rightBack.setPower(0);
-
-        if (detected){
-            //Detected!
-            telemetry.addData("Status", "Detected On Right; Ejecting");
-            telemetry.update();
-            intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            //Potential Change
-            runtime.reset();
-            while (runtime.milliseconds() < 1500){
-                intake.setPower(intakeSpeed);
-                sleep(100);
-                intake.setPower(0.0);
-                sleep(70);
-            }
-
-            intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            return;
-        }
-
-        while (runtime.milliseconds() < turnTime){
-            leftFront.setPower(-speed);
-            leftBack.setPower(-speed);
-            rightFront.setPower(speed);
-            rightBack.setPower(speed);
-        }
-
-        leftFront.setPower(0);
-        leftBack.setPower(0);
-        rightFront.setPower(0);
-        rightBack.setPower(0);
-
-        //Detected!
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Potential Change
-        runtime.reset();
-        while (runtime.milliseconds() < 1500){
-            telemetry.addData("Status", "Detected In Middle; Ejecting");
-            telemetry.update();
-            intake.setPower(intakeSpeed);
-            sleep(100);
-            intake.setPower(0.0);
-            sleep(70);
-        }
-
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        */
 
     }
 
-    public void eject(){
+    public void eject() {
         //Detected!
         telemetry.addData("Status", "Detected On Left; Ejecting");
         telemetry.update();
+
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Potential Change
         runtime.reset();
-        while (runtime.milliseconds() < 1500){
-            intake.setPower(intakeSpeed);
-            sleep(100);
-            intake.setPower(0.0);
-            sleep(70);
+        while (runtime.milliseconds() < 1500) {
+            double speed = -0.15;
+            intake.setPower(-0.25);
+            leftFront.setPower(speed);
+            leftBack.setPower(speed);
+            rightFront.setPower(speed);
+            rightBack.setPower(speed);
         }
+        brake();
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public void brake(){

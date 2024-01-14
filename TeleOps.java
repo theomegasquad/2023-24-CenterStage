@@ -26,6 +26,8 @@ public class TeleOps extends LinearOpMode {
     Servo leftTilt;
     Servo rightTilt;
 
+    Servo plane;
+
     private ElapsedTime runtime = new ElapsedTime();
     boolean intakeMoving = true;
 
@@ -47,6 +49,8 @@ public class TeleOps extends LinearOpMode {
 
         leftTilt = hardwareMap.get(Servo.class, "leftTilt");
         rightTilt = hardwareMap.get(Servo.class, "rightTilt");
+
+        plane = hardwareMap.get(Servo.class, "plane");
 
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -77,6 +81,17 @@ public class TeleOps extends LinearOpMode {
             runtime.reset();
 
             while (opModeIsActive()) {
+
+                if (gamepad1.a){
+                    plane.setPosition(0.6);
+                }
+                else{
+                    plane.setPosition(0.5);
+                }
+
+                if (gamepad1.x){
+                    intake.setPower(-0.6);
+                }
 
                 if (gamepad2.right_bumper) {
                     leftSlide.setPower(0.85);
